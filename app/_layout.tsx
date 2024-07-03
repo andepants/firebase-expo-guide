@@ -3,13 +3,15 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 
 import { useColorScheme } from '@/components/useColorScheme';
 import { Button, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '@/FirebaseConfig';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -51,26 +53,31 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
   const router = useRouter();
+  const [user, setUser] = useState<any>(null);
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen
-        name="login"
-        options={{
-          presentation: 'modal',
-          title: '',
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => router.back()}>
-              <Ionicons name="close-outline" size={28} />
-            </TouchableOpacity>
-          ),
-        }}
-      />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
+        { user ? (
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="login"
+              options={{
+                presentation: 'modal',
+                title: '',
+                headerLeft: () => (
+                  <TouchableOpacity onPress={() => router.back()}>
+                    <Ionicons name="close-outline" size={28} />
+                  </TouchableOpacity>
+                ),
+              }}/>
+          </Stack>
+        ) : (
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+          </Stack>
+        )}
     </ThemeProvider>
   );
 }

@@ -13,14 +13,20 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
+      "bundleIdentifier": "com.andrewheim.firebase-expo-guide",
       "supportsTablet": true,
-      "bundleIdentifier": "com.andrewheim.firebase-expo-guide"
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to upload images.",
+        "NSPhotoLibraryUsageDescription": "This app needs access to the photo library to upload images."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.andrewheim.firebaseexpoguide",
+      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
     },
     "web": {
       "bundler": "metro",
