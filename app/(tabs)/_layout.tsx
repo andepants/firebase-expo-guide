@@ -19,12 +19,6 @@ function TabBarIcon(props: {
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
-  getAuth().onAuthStateChanged((user) => {
-    if (!user) {
-      router.replace("/");
-    }
-  });
-
   return (
     <Tabs
       screenOptions={{
