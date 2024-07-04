@@ -1,10 +1,11 @@
-import { StyleSheet, Button, Image, FlatList, Alert } from 'react-native';
+import { StyleSheet, Button, Image, FlatList, Alert, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Text, View } from '@/components/Themed';
 import { storage, auth } from '../../FirebaseConfig';
 import { getDownloadURL, ref, uploadBytes, listAll, deleteObject } from 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
 import { onAuthStateChanged } from 'firebase/auth';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function TabThreeScreen() {
   const [image, setImage] = useState(null);
@@ -93,35 +94,47 @@ export default function TabThreeScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Storage</Text>
-      <Button title="Pick an image from camera roll" onPress={pickImage} />
-      {image && (
-        <>
-          <Image source={{ uri: image }} style={styles.image} />
-          <Button title="Upload Image" onPress={uploadImage} />
-        </>
-      )}
-      <FlatList
-        data={images}
-        renderItem={({ item }) => (
-          <View style={styles.imageContainer}>
-            <Image source={{ uri: item }} style={styles.image} />
-            <Button title="Delete" onPress={() => deleteImage(item)} />
-          </View>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Storage</Text>
+        <TouchableOpacity style={styles.button} onPress={pickImage}>
+          <Text style={styles.buttonText}>Pick an image from camera roll</Text>
+        </TouchableOpacity>
+        {image && (
+          <>
+            <Image source={{ uri: image }} style={styles.image} />
+            <TouchableOpacity style={styles.button} onPress={uploadImage}>
+              <Text style={styles.buttonText}>Upload Image</Text>
+            </TouchableOpacity>
+          </>
         )}
-        keyExtractor={(item, index) => index.toString()}
-      />
-    </View>
+        <FlatList
+          data={images}
+          renderItem={({ item }) => (
+            <View style={styles.imageContainer}>
+              <Image source={{ uri: item }} style={styles.image} />
+              <TouchableOpacity style={styles.button} onPress={() => deleteImage(item)}>
+                <Text style={styles.buttonText}>Delete</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+    marginBottom: -40,
   },
   title: {
     fontSize: 24,
@@ -136,5 +149,23 @@ const styles = StyleSheet.create({
   imageContainer: {
     alignItems: 'center',
     marginVertical: 10,
+  },
+  button: {
+    padding: 10,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#5C6BC0',
+    shadowColor: '#5C6BC0',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 5,
+    elevation: 5,
+    marginLeft: 10,
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '600',
   },
 });
