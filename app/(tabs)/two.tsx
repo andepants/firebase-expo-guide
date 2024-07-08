@@ -1,27 +1,43 @@
-import { StyleSheet, TextInput, FlatList, TouchableOpacity, Text, SafeAreaView } from 'react-native';
+import { StyleSheet, TextInput, FlatList, TouchableOpacity, Text, SafeAreaView, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { View } from '@/components/Themed';
 import { db } from '../../FirebaseConfig';
-import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
 export default function TabTwoScreen() {
   const [task, setTask] = useState('');
   const [todos, setTodos] = useState<any>([]);
+  const auth = getAuth();
+  const user = auth.currentUser;
   const todosCollection = collection(db, 'todos');
 
-  const fetchTodos = async () => {
-    const data = await getDocs(todosCollection);
-    setTodos(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  };
+  // const fetchTodos = async () => {};
+  // const addTodo = async () => {};
+  // const updateTodo = async () => {};
+  // const deleteTodo = async () => {};
 
   useEffect(() => {
     fetchTodos();
-  }, []);
+  }, [user]);
+
+  const fetchTodos = async () => {
+    if (user) {
+      const q = query(todosCollection, where("userId", "==", user.uid));
+      const data = await getDocs(q);
+      setTodos(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    } else {
+      console.log("No user logged in");
+    }
+  };
 
   const addTodo = async () => {
-    await addDoc(todosCollection, { task, completed: false });
-    setTask('');
-    fetchTodos();
+    if (user) {
+      await addDoc(todosCollection, { task, completed: false, userId: user.uid });
+      setTask('');
+      fetchTodos();
+    } else {
+      console.log("No user logged in");
+    }
   };
 
   const updateTodo = async (id: string, completed: any) => {

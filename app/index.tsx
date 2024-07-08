@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView } from 'react-native'
 import React, { useState } from 'react'
 import { auth } from '../FirebaseConfig'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
@@ -8,6 +8,14 @@ import { router } from 'expo-router'
 const index = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // const signIn = async () => {}
+
+  // const signUp = async () => {}
+
+  // try {
+  //   const user = await signInWithEmailAndPassword(auth, email, password)
+  // }
 
   const signIn = async () => {
     try {
@@ -30,7 +38,7 @@ const index = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Login</Text>
       <TextInput style={styles.textInput} placeholder="email" value={email} onChangeText={setEmail} />
       <TextInput style={styles.textInput} placeholder="password" value={password} onChangeText={setPassword} secureTextEntry/>
@@ -40,7 +48,7 @@ const index = () => {
       <TouchableOpacity style={styles.button} onPress={signUp}>
         <Text style={styles.text}>Make Account</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   )
 }
 

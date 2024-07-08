@@ -1,16 +1,19 @@
-import { StyleSheet, Button, Image, FlatList, Alert, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, FlatList, Alert, TouchableOpacity, SafeAreaView, Text, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { Text, View } from '@/components/Themed';
 import { storage, auth } from '../../FirebaseConfig';
 import { getDownloadURL, ref, uploadBytes, listAll, deleteObject } from 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
-import { onAuthStateChanged } from 'firebase/auth';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { User, onAuthStateChanged } from 'firebase/auth';
 
 export default function TabThreeScreen() {
-  const [image, setImage] = useState(null);
-  const [images, setImages] = useState([]);
-  const [user, setUser] = useState(null);
+  const [image, setImage] = useState<any>(null);
+  const [images, setImages] = useState<any[]>([]);
+  const [user, setUser] = useState<User | null>(null);
+
+  // const fetchImages = async (userId: any) => {};
+  // const pickImage = async () => {};
+  // const uploadImage = async () => {};
+  // const deleteImage = async (url: any) => {};
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -22,7 +25,7 @@ export default function TabThreeScreen() {
     return unsubscribe;
   }, []);
 
-  const fetchImages = async (userId) => {
+  const fetchImages = async (userId: any) => {
     try {
       const storageRef = ref(storage, `images/${userId}`);
       const result = await listAll(storageRef);
@@ -71,13 +74,13 @@ export default function TabThreeScreen() {
       setImages(images => [...images, url]);
       setImage(null); // Reset the image state
       console.log("Image uploaded and URL retrieved: ", url);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error uploading image: ", error);
       Alert.alert('Upload failed!', error.message);
     }
   };
 
-  const deleteImage = async (url) => {
+  const deleteImage = async (url: any) => {
     if (!user) {
       Alert.alert('No user found!');
       return;
@@ -87,7 +90,7 @@ export default function TabThreeScreen() {
       const storageRef = ref(storage, url);
       await deleteObject(storageRef);
       setImages(images.filter((img) => img !== url));
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error deleting image: ", error);
       Alert.alert('Delete failed!', error.message);
     }
@@ -134,7 +137,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
-    marginBottom: -40,
   },
   title: {
     fontSize: 24,

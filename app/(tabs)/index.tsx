@@ -1,5 +1,4 @@
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, View } from '@/components/Themed';
+import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import { auth } from '../../FirebaseConfig';
 import { router } from 'expo-router';
 import { getAuth } from 'firebase/auth';
@@ -13,7 +12,6 @@ export default function TabOneScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign Out</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <TouchableOpacity style={styles.button} onPress={() => auth.signOut()}>
         <Text style={styles.text}>Sign Out</Text>
       </TouchableOpacity>
