@@ -11,11 +11,6 @@ export default function TabTwoScreen() {
   const user = auth.currentUser;
   const todosCollection = collection(db, 'todos');
 
-  // const fetchTodos = async () => {};
-  // const addTodo = async () => {};
-  // const updateTodo = async () => {};
-  // const deleteTodo = async () => {};
-
   useEffect(() => {
     fetchTodos();
   }, [user]);

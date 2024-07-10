@@ -10,11 +10,6 @@ export default function TabThreeScreen() {
   const [images, setImages] = useState<any[]>([]);
   const [user, setUser] = useState<User | null>(null);
 
-  // const fetchImages = async (userId: any) => {};
-  // const pickImage = async () => {};
-  // const uploadImage = async () => {};
-  // const deleteImage = async (url: any) => {};
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);

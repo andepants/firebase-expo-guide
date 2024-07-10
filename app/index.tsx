@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView } from 'react-native'
+import { Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView } from 'react-native'
 import React, { useState } from 'react'
 import { auth } from '../FirebaseConfig'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
@@ -9,13 +9,6 @@ const index = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // const signIn = async () => {}
-
-  // const signUp = async () => {}
-
-  // try {
-  //   const user = await signInWithEmailAndPassword(auth, email, password)
-  // }
 
   const signIn = async () => {
     try {
